@@ -1,0 +1,149 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>vim-open-alternate by cyphactor</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>vim-open-alternate</h1>
+        <p>Vim plugin that makes it trivial to jump between alternate files (test files &amp; implementation, etc.)</p>
+
+        <p class="view"><a href="https://github.com/cyphactor/vim-open-alternate">View the Project on GitHub <small>cyphactor/vim-open-alternate</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/cyphactor/vim-open-alternate/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/cyphactor/vim-open-alternate/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/cyphactor/vim-open-alternate">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>open-alternate.vim</h1>
+
+<p><em>Bringing alternate file opening to the forefront</em></p>
+
+<h2>What it provides?</h2>
+
+<p>This plugin provides a simple solution for opening alternate files
+intelligently in <a href="http://www.vim.org">vim</a>. It does this by providing a
+user-command called <code>OpenAlternate</code> which when executed will open the
+alternate file to the currently opened file.</p>
+
+<h3>Supported File Types</h3>
+
+<p>Currently, this plugin supports the following list of file types.</p>
+
+<table>
+<tr>
+<th>
+      Current File
+    </th>
+    <th>
+      Alternate File
+    </th>
+  </tr>
+<tr>
+<td>
+      RSpec File
+    </td>
+    <td>
+      Ruby Implementation file (includes logic for Ruby on Rails)
+    </td>
+  </tr>
+<tr>
+<td>
+      Ruby Implementation File
+    </td>
+    <td>
+      RSpec file (includes logic for Ruby on Rails)
+    </td>
+  </tr>
+<tr>
+<td>
+      Cucumber Feature File
+    </td>
+    <td>
+      Cucumber Step Definition file
+    </td>
+  </tr>
+<tr>
+<td>
+      Cucumber Step Definition File
+    </td>
+    <td>
+      Cucumber Feature file
+    </td>
+  </tr>
+</table><h2>Installation</h2>
+
+<p>If you don't have a preferred installation method, I recommend installing
+<a href="https://github.com/tpope/vim-pathogen">pathogen.vim</a> and using it in
+combination with <a href="http://git-scm.com/book/en/Git-Tools-Submodules">git
+submodules</a> as describe in
+this <a href="http://vimcasts.org/episodes/synchronizing-plugins-with-git-submodules-and-pathogen/">Vimcast - Synchronizing plugins with git submodules and
+pathogen</a>.</p>
+
+<p>If your installation method is the above recommended one, it should be as
+simple as running the following commands:</p>
+
+<pre><code>cd ~/.vim/
+git submodule add git@github.com:cyphactor/vim-open-alternate.git bundle/vim-open-alternate
+git add .
+git commit -m "Added vim-open-alternate plugin to my setup."
+</code></pre>
+
+<p>If you are using another method, you are on your own. I have been told that
+this plugin is compatible with <a href="http://github.com/gmarik/vundle">Vundle</a>
+but I have not tested it myself.</p>
+
+<h2>Configuration</h2>
+
+<p>The recommended configuration for this plugin is to simply map a key combo to
+run the <code>OpenAlternate</code> command for you. This can easily be done by adding the
+following to your <code>~/.vimrc</code>.</p>
+
+<pre><code>nnoremap &lt;leader&gt;. :OpenAlternate&lt;cr&gt;
+</code></pre>
+
+<p>In the above example I map my normal mode <code>&lt;leader&gt;.</code> key combo to execute the
+<code>OpenAlternate</code> command, in turn opening the alternate file for editing.</p>
+
+<p>You can of course map this command anyway you like, or even choose not to map
+it and just execute the command as follows when you need it.</p>
+
+<pre><code>:OpenAlternate&lt;cr&gt;
+</code></pre>
+
+<h2>Credits</h2>
+
+<p>I took the idea for my <code>&lt;leader&gt;.</code> binding and some logic for opening the
+alternate file from Gary Bernhardt's vim setup. I also took bits and pieces of
+file path conversions for alternate files from numerios friends <code>.vimrc</code>
+files. Therefore, credit must go out to Gary Bernhardt for a reasonable
+starting point as well as my numerous friends for sharing their alternate
+file path conversions with me.</p>
+
+<h2>License</h2>
+
+<p>Copyright (c) Andrew De Ponte. Distributed under the same terms as Vim itself.
+See <code>:help license</code>.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/cyphactor">cyphactor</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
