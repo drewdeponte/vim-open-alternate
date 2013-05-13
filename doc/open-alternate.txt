@@ -1,0 +1,45 @@
+*open-alternate.txt* Vim plugin to help you quickly alternate files
+
+Author: Andrew De Ponte <http://andrewdeponte.com> <http://github.com/cyphactor>
+License: Same terms as Vim itself (see |license|)
+
+This plugin is only available if 'compatible' is not set.
+
+INTRODUCTION                                    *open-alternate*
+
+The Vim open-alternate plugin is a plugin designed to help you quickly switch
+to editing the alternate file to the one that is currently open. The following
+file types are currently supported.
+
+                     RSpec -> Ruby file (Ruby on Rails logic included)
+                      Ruby -> RSpec File (Ruby on Rails logic included)
+          Cucumber Feature -> Cucumber Step Definition file
+  Cucumber Step Definition -> Cucumber Feature file
+
+This is especially useful when you are in a TDD/BDD red-green-refactor cycle
+and you need to quickly alternate between the RSpec file and the Ruby
+implementation file. Or, if you are at the Cucumber level and you need to
+alternate between the Cucumber Feature file and the Cucumber Step Definition
+file. When the |open-alternate-commands| is used it quickly opens up the
+alternate file to the currently opened file in a new buffer ready for editing.
+
+COMMANDS                                        *open-alternate-commands*
+
+                                                *open-alternaate-:OpenAlternate*
+:OpenAlternate           Open the alternate file to the currently opened file.
+
+MAPPINGS                                        *open-alternate-mappings*
+
+This plugin does not automatically define any mappings. However, we do
+recommend the following mapping.
+
+nnoremap <leader>. :OpenAlternate<cr>
+
+The above mapping would make it so that <leader>. when pressed would execute
+the :OpenAlternate command.
+
+ABOUT                                           *open-alternate-about*
+
+Grab the latest version, report a bug, or contribute on GitHub:
+
+http://github.com/cyphactor/vim-open-alternate
