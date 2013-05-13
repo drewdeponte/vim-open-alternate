@@ -2,6 +2,10 @@
 
 *Bringing alternate file opening to the forefront*
 
+<iframe src="http://player.vimeo.com/video/66043605" width="500" height="281"
+frameborder="0" webkitAllowFullScreen mozallowfullscreen
+allowFullScreen></iframe>
+
 ## What it provides?
 
 This plugin provides a simple solution for opening alternate files
