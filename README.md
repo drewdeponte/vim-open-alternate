@@ -2,9 +2,7 @@
 
 *Bringing alternate file opening to the forefront*
 
-<iframe src="http://player.vimeo.com/video/66043605" width="500" height="281"
-frameborder="0" webkitAllowFullScreen mozallowfullscreen
-allowFullScreen></iframe>
+[![It in Action](http://andrewdeponte.com/vim-open-alternate/images/vim-open-alternate-intro-screenshot.png)](https://vimeo.com/66043605)
 
 ## What it provides?
 
