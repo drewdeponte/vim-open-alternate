@@ -14,7 +14,7 @@ function! s:IsCucumberStepDefinitionFile(file)
 endfunction
 
 function! s:IsRailsControllerModelViewAssetFile(file)
-  return match(a:file, '\<controllers\>') != -1 || match(a:file, '\<models\>') != -1 || match(a:file, '\<views\>') != -1 || match(a:file, '\<assets\>') != -1
+  return match(a:file, '\<controllers\>') != -1 || match(a:file, '\<models\>') != -1 || match(a:file, '\<views\>') != -1 || match(a:file, '\<assets\>') != -1 || match(a:file, '\<helpers\>') != -1
 endfunction
 
 function! s:IsJavascriptSpecFile(file)
