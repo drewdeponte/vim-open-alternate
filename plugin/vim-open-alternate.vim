@@ -118,4 +118,9 @@ function! s:OpenAlternate()
   exec ':e ' . s:AlternateFileForCurrentFile()
 endfunction
 
+function! s:OpenAlternateInNewWindow()
+  exec ':new ' . s:AlternateFileForCurrentFile()
+endfunction
+
 command! OpenAlternate :call s:OpenAlternate()
+command! OpenAlternateInNewWindow :call s:OpenAlternateInNewWindow()
