@@ -5,6 +5,14 @@ function! s:IsRSpecFile(file)
   return match(a:file, '^spec/.*_spec\.rb$') != -1
 endfunction
 
+function! s:IsRakeRSpecFile(file)
+  return match(a:file, '^spec/.*_rake_spec\.rb$') != -1
+endfunction
+
+function! s:IsRakeFile(file)
+  return match(a:file, '*\.rake$')
+endfunction
+
 function! s:IsCucumberFeatureFile(file)
   return match(a:file, '^features/.*\.feature$') != -1
 endfunction
@@ -49,6 +57,16 @@ function! s:AlternateFileForRSpecFile(rspec_file)
   return alternate_file
 endfunction
 
+function! s:AlternateFileForRakeRSpecFile(rspec_file)
+  " go to implementation file
+  let alternate_file = substitute(a:rspec_file, '_rake_spec\.rb$', '.rake', '')
+  let alternate_file = substitute(alternate_file, '^spec/', '', '')
+  if s:IsRailsControllerModelViewAssetFile(alternate_file)
+    let alternate_file = 'app/' . alternate_file
+  end
+  return alternate_file
+endfunction
+
 function! s:AlternateFileForJavascriptSpecFile(javascript_spec_file)
   " go to implementation file
   let alternate_file = substitute(a:javascript_spec_file, '_spec\.js$', '.js', '')
@@ -84,6 +102,17 @@ function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
   return alternate_file
 endfunction
 
+function! s:AlternateFileForRakeImplementationFile(rake_implementation_file)
+  let alternate_file = a:rake_implementation_file
+  " go to spec file
+  if s:IsRailsControllerModelViewAssetFile(a:rake_implementation_file)
+    let alternate_file = substitute(a:rake_implementation_file, '^app/', '', '')
+  end
+  let alternate_file = substitute(alternate_file, '\.rake$', '_rake_spec.rb', '')
+  let alternate_file = 'spec/' . alternate_file
+  return alternate_file
+endfunction
+
 function! s:AlternateFileForJavascriptImplementationFile(javascript_implementation_file)
   let alternate_file = a:javascript_implementation_file
   " go to spec file
@@ -101,6 +130,8 @@ function! s:AlternateFileForCurrentFile()
 
   if s:IsCucumberFeatureFile(current_file)
     return s:AlternateFileForCucumberFeatureFile(current_file)
+  elseif s:IsRakeRSpecFile(current_file)
+    return s:AlternateFileForRakeRSpecFile(current_file)
   elseif s:IsRSpecFile(current_file)
     return s:AlternateFileForRSpecFile(current_file)
   elseif s:IsCucumberStepDefinitionFile(current_file)
@@ -109,6 +140,8 @@ function! s:AlternateFileForCurrentFile()
     return s:AlternateFileForJavascriptSpecFile(current_file)
   elseif s:IsJavascriptImplementationFile(current_file)
     return s:AlternateFileForJavascriptImplementationFile(current_file)
+  elseif s:IsRakeFile(current_file)
+    return s:AlternateFileForRakeImplementationFile(current_file)
   else
     return s:AlternateFileForRubyImplementationFile(current_file)
   endif
