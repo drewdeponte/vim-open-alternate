@@ -10,7 +10,7 @@ function! s:IsRakeRSpecFile(file)
 endfunction
 
 function! s:IsRakeFile(file)
-  return match(a:file, '*\.rake$')
+  return match(a:file, '.*\.rake$') != -1
 endfunction
 
 function! s:IsCucumberFeatureFile(file)
