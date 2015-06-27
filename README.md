@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cyphactor/vim-open-alternate.svg?branch=master)](https://travis-ci.org/cyphactor/vim-open-alternate)
+
 # open-alternate.vim
 
 *Bringing alternate file opening to the forefront*
