@@ -124,27 +124,35 @@ function! s:AlternateFileForJavascriptImplementationFile(javascript_implementati
   return alternate_file
 endfunction
 
+function! s:RemoveLeadingDotSlash(file)
+  return substitute(a:file, '^\./', '', '')
+endfunction
+
+function! s:AlternateFileFor(file)
+  let path = s:RemoveLeadingDotSlash(a:file)
+
+  if s:IsCucumberFeatureFile(path)
+    return s:AlternateFileForCucumberFeatureFile(path)
+  elseif s:IsRakeRSpecFile(path)
+    return s:AlternateFileForRakeRSpecFile(path)
+  elseif s:IsRSpecFile(path)
+    return s:AlternateFileForRSpecFile(path)
+  elseif s:IsCucumberStepDefinitionFile(path)
+    return s:AlternateFileForCucumberStepDefinitionFile(path)
+  elseif s:IsJavascriptSpecFile(path)
+    return s:AlternateFileForJavascriptSpecFile(path)
+  elseif s:IsJavascriptImplementationFile(path)
+    return s:AlternateFileForJavascriptImplementationFile(path)
+  elseif s:IsRakeFile(path)
+    return s:AlternateFileForRakeImplementationFile(path)
+  else
+    return s:AlternateFileForRubyImplementationFile(path)
+  endif
+endfunction
 
 function! s:AlternateFileForCurrentFile()
   let current_file = expand("%")
-
-  if s:IsCucumberFeatureFile(current_file)
-    return s:AlternateFileForCucumberFeatureFile(current_file)
-  elseif s:IsRakeRSpecFile(current_file)
-    return s:AlternateFileForRakeRSpecFile(current_file)
-  elseif s:IsRSpecFile(current_file)
-    return s:AlternateFileForRSpecFile(current_file)
-  elseif s:IsCucumberStepDefinitionFile(current_file)
-    return s:AlternateFileForCucumberStepDefinitionFile(current_file)
-  elseif s:IsJavascriptSpecFile(current_file)
-    return s:AlternateFileForJavascriptSpecFile(current_file)
-  elseif s:IsJavascriptImplementationFile(current_file)
-    return s:AlternateFileForJavascriptImplementationFile(current_file)
-  elseif s:IsRakeFile(current_file)
-    return s:AlternateFileForRakeImplementationFile(current_file)
-  else
-    return s:AlternateFileForRubyImplementationFile(current_file)
-  endif
+  return s:AlternateFileFor(current_file)
 endfunction
 
 function! s:OpenAlternate()
@@ -152,3 +160,13 @@ function! s:OpenAlternate()
 endfunction
 
 command! OpenAlternate :call s:OpenAlternate()
+
+" Sadly these are here to enable testing script scoped methods in the test suite.
+function! VimOpenAlternateScope()
+  return s:
+endfunction
+
+function! VimOpenAlternateSid()
+  return maparg('<SID>', 'n')
+endfunction
+nnoremap <SID>  <SID>
