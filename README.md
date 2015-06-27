@@ -56,6 +56,14 @@ Currently, this plugin supports the following list of file types.
       Cucumber Feature file
     </td>
   </tr>
+  <tr>
+    <td>
+      Rails Rake File
+    </td>
+    <td>
+      Rails Rake Spec file
+    </td>
+  </tr>
 </table>
 
 ## Installation
