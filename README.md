@@ -4,7 +4,7 @@
 
 *Bringing alternate file opening to the forefront*
 
-[![It in Action](http://andrewdeponte.com/vim-open-alternate/images/vim-open-alternate-intro-screenshot.png)](https://vimeo.com/66043605)
+[![It in Action](/images/vim-open-alternate-intro-screenshot.png?raw=true)](https://vimeo.com/66043605)
 
 ## What it provides?
 
