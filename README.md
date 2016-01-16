@@ -66,6 +66,22 @@ Currently, this plugin supports the following list of file types.
       Rails Rake Spec file
     </td>
   </tr>
+  <tr>
+    <td>
+      Elixir ExUnit File
+    </td>
+    <td>
+      Elixir Module Implementation File
+    </td>
+  </tr>
+  <tr>
+    <td>
+      Elixir Module Implementation File
+    </td>
+    <td>
+      Elixir ExUnit File
+    </td>
+  </tr>
 </table>
 
 ## Installation

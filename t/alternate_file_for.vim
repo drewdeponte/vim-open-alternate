@@ -84,4 +84,12 @@ describe 's:AlternateFileFor'
   it 'supports cucumber step definition files'
     Expect vspec#call('s:AlternateFileFor', 'foo/bar/jacked.js') == 'spec/foo/bar/jacked_spec.js'
   end
+
+  it 'supports ExUnit test files'
+    Expect vspec#call('s:AlternateFileFor', 'test/lib/my_awesome_app/supervisor_test.exs') == 'lib/my_awesome_app/supervisor.ex'
+  end
+
+  it 'supports elixir implementation files'
+    Expect vspec#call('s:AlternateFileFor', 'lib/my_awesome_app/supervisor.ex') == 'test/lib/my_awesome_app/supervisor_test.exs'
+  end
 end
