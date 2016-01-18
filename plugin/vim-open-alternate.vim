@@ -33,6 +33,14 @@ function! s:IsJavascriptImplementationFile(file)
   return match(a:file, '^.*\.js$') != -1
 endfunction
 
+function! s:IsExUnitTestFile(file)
+  return match(a:file, '^test/.*_test\.exs$') != -1
+endfunction
+
+function! s:IsElixirImplementationFile(file)
+  return match(a:file, '^.*\.ex$') != -1
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions to generate alternate files paths for test files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -74,6 +82,13 @@ function! s:AlternateFileForJavascriptSpecFile(javascript_spec_file)
   if s:IsRailsControllerModelViewAssetFile(alternate_file)
     let alternate_file = 'app/' . alternate_file
   end
+  return alternate_file
+endfunction
+
+function! s:AlternateFileForExUnitTestFile(exunit_test_file)
+  " go to implementation file
+  let alternate_file = substitute(a:exunit_test_file, '_test\.exs$', '.ex', '')
+  let alternate_file = substitute(alternate_file, '^test/', '', '')
   return alternate_file
 endfunction
 
@@ -124,6 +139,13 @@ function! s:AlternateFileForJavascriptImplementationFile(javascript_implementati
   return alternate_file
 endfunction
 
+function! s:AlternateFileForElixitImplementationFile(elixir_implementation_file)
+  " go to implementation file
+  let alternate_file = substitute(a:elixir_implementation_file, '\.ex$', '_test.exs', '')
+  let alternate_file = 'test/' . alternate_file
+  return alternate_file
+endfunction
+
 function! s:RemoveLeadingDotSlash(file)
   return substitute(a:file, '^\./', '', '')
 endfunction
@@ -145,6 +167,10 @@ function! s:AlternateFileFor(file)
     return s:AlternateFileForJavascriptImplementationFile(path)
   elseif s:IsRakeFile(path)
     return s:AlternateFileForRakeImplementationFile(path)
+  elseif s:IsExUnitTestFile(path)
+    return s:AlternateFileForExUnitTestFile(path)
+  elseif s:IsElixirImplementationFile(path)
+    return s:AlternateFileForElixitImplementationFile(path)
   else
     return s:AlternateFileForRubyImplementationFile(path)
   endif
