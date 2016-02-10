@@ -25,6 +25,10 @@ function! s:IsRailsControllerModelViewAssetFile(file)
   return match(a:file, '\<controllers\>') != -1 || match(a:file, '\<models\>') != -1 || match(a:file, '\<views\>') != -1 || match(a:file, '\<assets\>') != -1 || match(a:file, '\<helpers\>') != -1 || match(a:file, '\<mailers\>') != -1
 endfunction
 
+function! s:IsHanamiContainerArchitecture(file)
+  return match(a:file, '^spec\/\w\+\/controllers\/') != -1 || match(a:file, '^spec\/\w\+\/views\/') != -1 || match(a:file, '^apps\/\w\+\/controllers\/') != -1 || match(a:file, '^apps\/\w\+\/views\/') != -1
+endfunction
+
 function! s:IsJavascriptSpecFile(file)
   return match(a:file, '^spec/.*_spec\.js$') != -1
 endfunction
@@ -59,7 +63,9 @@ function! s:AlternateFileForRSpecFile(rspec_file)
   let alternate_file = substitute(a:rspec_file, 'erb_spec\.rb$', 'erb', '')
   let alternate_file = substitute(alternate_file, '_spec\.rb$', '.rb', '')
   let alternate_file = substitute(alternate_file, '^spec/', '', '')
-  if s:IsRailsControllerModelViewAssetFile(alternate_file)
+  if s:IsHanamiContainerArchitecture(a:rspec_file)
+    let alternate_file = 'apps/' . alternate_file
+  elseif s:IsRailsControllerModelViewAssetFile(alternate_file)
     let alternate_file = 'app/' . alternate_file
   end
   return alternate_file
@@ -108,7 +114,9 @@ endfunction
 function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
   let alternate_file = a:ruby_implementation_file
   " go to spec file
-  if s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
+  if s:IsHanamiContainerArchitecture(a:ruby_implementation_file)
+    let alternate_file = substitute(alternate_file, '^apps/', '', '')
+  elseif s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
     let alternate_file = substitute(a:ruby_implementation_file, '^app/', '', '')
   end
   let alternate_file = substitute(alternate_file, '\.rb$', '_spec.rb', '')
