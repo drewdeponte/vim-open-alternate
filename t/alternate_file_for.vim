@@ -33,7 +33,7 @@ describe 's:AlternateFileFor'
     Expect vspec#call('s:AlternateFileFor', './apps/web/controllers/users/create.rb') == 'spec/web/controllers/users/create_spec.rb'
   end
 
-  it 'supports hanami controller files with leading dot slash'
+  it 'supports hanami controller files without leading dot slash'
     Expect vspec#call('s:AlternateFileFor', 'apps/web/controllers/users/create.rb') == 'spec/web/controllers/users/create_spec.rb'
   end
 
@@ -45,7 +45,7 @@ describe 's:AlternateFileFor'
     Expect vspec#call('s:AlternateFileFor', './apps/web/views/users/create.rb') == 'spec/web/views/users/create_spec.rb'
   end
 
-  it 'supports hanami view files with leading dot slash'
+  it 'supports hanami view files without leading dot slash'
     Expect vspec#call('s:AlternateFileFor', 'apps/web/views/users/create.rb') == 'spec/web/views/users/create_spec.rb'
   end
 
