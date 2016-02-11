@@ -13,138 +13,158 @@ describe 's:RemoveLeadingDotSlash'
 end
 
 describe 's:AlternateFileFor'
-  context 'when the path is for a cucumber feature file'
-    it 'supports cucumber feature files'
-      Expect vspec#call('s:AlternateFileFor', 'features/project_management.feature') == 'features/step_definitions/project_management_steps.rb'
+  context 'Cucumber support'
+    context 'when path is a Cucumber feature file'
+      it 'returns the paired step definition file'
+        Expect vspec#call('s:AlternateFileFor', 'features/project_management.feature') == 'features/step_definitions/project_management_steps.rb'
+      end
+    end
+
+    context 'when path is a Cucumber step definition file'
+      it 'returns the paired Cucumber feature file'
+        Expect vspec#call('s:AlternateFileFor', 'features/step_definitions/project_management_steps.rb') == 'features/project_management.feature'
+      end
     end
   end
 
-  context 'when the path is for a RSpec file'
-    context 'when the file is from a hanami app'
-      it 'supports controller rspec files without leading dot slash'
+  context 'JavaScript Jasmine Support'
+    context 'when path is a javascript spec file'
+      it 'returns the paired javascript implementation files'
+        Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/jacked_spec.js') == 'foo/bar/jacked.js'
+      end
+    end
+
+    context 'when path is a javascript implementation file'
+      it 'returns the paired javascript spec files'
+        Expect vspec#call('s:AlternateFileFor', 'foo/bar/jacked.js') == 'spec/foo/bar/jacked_spec.js'
+      end
+    end
+  end
+
+  context 'Elixir ExUnit support'
+    context 'when path is a ex unit test file'
+      it 'returns the paired elixir implementation'
+        Expect vspec#call('s:AlternateFileFor', 'test/lib/my_awesome_app/supervisor_test.exs') == 'lib/my_awesome_app/supervisor.ex'
+      end
+    end
+
+    context 'when path is an elixir implementation file'
+      it 'returns the paired ExUnit test file'
+        Expect vspec#call('s:AlternateFileFor', 'lib/my_awesome_app/supervisor.ex') == 'test/lib/my_awesome_app/supervisor_test.exs'
+      end
+    end
+  end
+
+  context 'Hanami RSpec support'
+    context 'when path is a controller RSpec file'
+      it 'returns the paired controller implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/web/controllers/users/create_spec.rb') == 'apps/web/controllers/users/create.rb'
       end
-
-      it 'supports controller rspec files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './spec/web/controllers/users/create_spec.rb') == 'apps/web/controllers/users/create.rb'
-      end
-
-      it 'supports view rspec files without leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', 'spec/web/views/users/create_spec.rb') == 'apps/web/views/users/create.rb'
-      end
-
-      it 'supports view rspec files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './spec/web/views/users/create_spec.rb') == 'apps/web/views/users/create.rb'
-      end
     end
 
-    context 'when the file is from a rails app'
-      it 'supports rspec rails controller files'
-        Expect vspec#call('s:AlternateFileFor', 'spec/controllers/tasks_controller_spec.rb') == 'app/controllers/tasks_controller.rb'
-      end
-
-      it 'supports rspec rails controller files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './spec/controllers/tasks_controller_spec.rb') == 'app/controllers/tasks_controller.rb'
-      end
-
-      it 'supports rspec rails model files'
-        Expect vspec#call('s:AlternateFileFor', 'spec/models/task_spec.rb') == 'app/models/task.rb'
-      end
-
-      it 'supports rspec rails helper files'
-        Expect vspec#call('s:AlternateFileFor', 'spec/helpers/hoopty_spec.rb') == 'app/helpers/hoopty.rb'
-      end
-
-      it 'supports rspec rails mailer files'
-        Expect vspec#call('s:AlternateFileFor', 'spec/mailers/hoopty_mailer_spec.rb') == 'app/mailers/hoopty_mailer.rb'
-      end
-
-      it 'supports rspec ruby/rails lib files'
-        Expect vspec#call('s:AlternateFileFor', 'spec/lib/foo_spec.rb') == 'lib/foo.rb'
-      end
-    end
-  end
-
-  context 'when the path is for cucumber step definitions'
-    it 'supports cucumber step definition files'
-      Expect vspec#call('s:AlternateFileFor', 'features/step_definitions/project_management_steps.rb') == 'features/project_management.feature'
-    end
-  end
-
-  context 'when the path is for a javascript spec file'
-    it 'supports javascript spec files'
-      Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/jacked_spec.js') == 'foo/bar/jacked.js'
-    end
-  end
-
-  context 'when the path is for a javascript implementation file'
-    it 'supports javascript implementation files'
-      Expect vspec#call('s:AlternateFileFor', 'foo/bar/jacked.js') == 'spec/foo/bar/jacked_spec.js'
-    end
-  end
-
-  context 'when the path is for ex unit test files'
-    it 'supports ExUnit test files'
-      Expect vspec#call('s:AlternateFileFor', 'test/lib/my_awesome_app/supervisor_test.exs') == 'lib/my_awesome_app/supervisor.ex'
-    end
-  end
-
-  context 'when the path is for elixir implementation files'
-    it 'supports elixir implementation files'
-      Expect vspec#call('s:AlternateFileFor', 'lib/my_awesome_app/supervisor.ex') == 'test/lib/my_awesome_app/supervisor_test.exs'
-    end
-  end
-
-  context 'when the path is for ruby implementation'
-    context 'when the path is from a hanami app'
-      it 'supports controller files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './apps/web/controllers/users/create.rb') == 'spec/web/controllers/users/create_spec.rb'
-      end
-
-      it 'supports controller files without leading dot slash'
+    context 'when path is a controller implementation file'
+      it 'returns the paired controller RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'apps/web/controllers/users/create.rb') == 'spec/web/controllers/users/create_spec.rb'
       end
+    end
 
-      it 'supports view files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './apps/web/views/users/create.rb') == 'spec/web/views/users/create_spec.rb'
+    context 'when path is a view RSpec file'
+      it 'returns the paired view implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/web/views/users/create_spec.rb') == 'apps/web/views/users/create.rb'
       end
+    end
 
-      it 'supports view files without leading dot slash'
+    context 'when path is a view implementation file'
+      it 'returns the paired view RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'apps/web/views/users/create.rb') == 'spec/web/views/users/create_spec.rb'
       end
     end
+  end
 
-    context 'when the file is from a rails app'
-      it 'supports rails controller files'
+  context 'Rails RSpec support'
+    context 'when path is a controller RSpec file'
+      it 'returns the paird controller implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/controllers/tasks_controller_spec.rb') == 'app/controllers/tasks_controller.rb'
+      end
+    end
+
+    context 'when path is a controller implementation file'
+      it 'returns the paired controller RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'app/controllers/tasks_controller.rb') == 'spec/controllers/tasks_controller_spec.rb'
       end
+    end
 
-      it 'supports rails controller files with leading dot slash'
-        Expect vspec#call('s:AlternateFileFor', './app/controllers/tasks_controller.rb') == 'spec/controllers/tasks_controller_spec.rb'
+    context 'when path is a model RSpec file'
+      it 'returns the paired model implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/models/task_spec.rb') == 'app/models/task.rb'
       end
+    end
 
-      it 'supports rails model files'
+    context 'when path is a model implementation file'
+      it 'returns the paired model RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'app/models/task.rb') == 'spec/models/task_spec.rb'
       end
+    end
 
-      it 'supports rails helper files'
+    context 'when path is a helper RSpec file'
+      it 'returns the paired helper implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/helpers/hoopty_spec.rb') == 'app/helpers/hoopty.rb'
+      end
+    end
+
+    context 'when path is a helper implementation file'
+      it 'returns the paired helper RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'app/helpers/hoopty.rb') == 'spec/helpers/hoopty_spec.rb'
       end
+    end
 
-      it 'supports rails mailer files'
+    context 'when path is a mailer RSpec file'
+      it 'returns the paired mailer implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/mailers/hoopty_mailer_spec.rb') == 'app/mailers/hoopty_mailer.rb'
+      end
+    end
+
+    context 'when path is a mailer implementation file'
+      it 'returns the paired mailer RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'app/mailers/hoopty_mailer.rb') == 'spec/mailers/hoopty_mailer_spec.rb'
       end
+    end
 
-      it 'supports ruby/rails lib files'
+    context 'when path is a lib RSpec file'
+      it 'returns the paired lib implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/lib/foo_spec.rb') == 'lib/foo.rb'
+      end
+    end
+
+    context 'when path is a lib implementation file'
+      it 'returns the paired lib RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/lib/foo_spec.rb'
       end
+    end
 
-      it 'supports rspec rails rake files'
+    context 'when path is a rake implementation file'
+      it 'returns the paired rake RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'bar/foo.rake') == 'spec/bar/foo_rake_spec.rb'
+      end
+    end
+
+    context 'when path is a rake RSpec file'
+      it 'returns the paired rake implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/bar/foo_rake_spec.rb') == 'bar/foo.rake'
       end
+    end
+  end
 
-      it 'supports rails rake files'
-        Expect vspec#call('s:AlternateFileFor', 'bar/foo.rake') == 'spec/bar/foo_rake_spec.rb'
+  context 'Ruby Gem support'
+    context 'when path is a lib implementation file'
+      it 'returns the paired RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/lib/foo_spec.rb'
+      end
+    end
+
+    context 'when path is a lib RSpec file'
+      it 'returns the paired ruby implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/lib/foo_spec.rb') == 'lib/foo.rb'
       end
     end
   end
