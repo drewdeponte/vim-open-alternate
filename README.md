@@ -31,7 +31,7 @@ Currently, this plugin supports the following list of file types.
       RSpec File
     </td>
     <td>
-      Ruby Implementation file (includes logic for Ruby on Rails)
+      Ruby Implementation file (includes logic for Hanami and Ruby on Rails)
     </td>
   </tr>
   <tr>
@@ -39,7 +39,7 @@ Currently, this plugin supports the following list of file types.
       Ruby Implementation File
     </td>
     <td>
-      RSpec file (includes logic for Ruby on Rails)
+      RSpec file (includes logic for Hanami and Ruby on Rails)
     </td>
   </tr>
   <tr>
