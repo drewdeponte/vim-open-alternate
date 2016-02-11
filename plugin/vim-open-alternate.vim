@@ -1,6 +1,10 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions to help identify types of files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:InRailsProject()
+  return filereadable('./bin/rails') || filereadable('./script/rails')
+endfunction
+
 function! s:IsRSpecFile(file)
   return match(a:file, '^spec/.*_spec\.rb$') != -1
 endfunction
@@ -67,6 +71,9 @@ function! s:AlternateFileForRSpecFile(rspec_file)
     let alternate_file = 'apps/' . alternate_file
   elseif s:IsRailsControllerModelViewAssetFile(alternate_file)
     let alternate_file = 'app/' . alternate_file
+  elseif s:InRailsProject()
+  else
+    let alternate_file = 'lib/' . alternate_file
   end
   return alternate_file
 endfunction
@@ -118,6 +125,8 @@ function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^apps/', '', '')
   elseif s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
     let alternate_file = substitute(a:ruby_implementation_file, '^app/', '', '')
+  elseif !s:InRailsProject()
+    let alternate_file = substitute(a:ruby_implementation_file, '^lib/', '', '')
   end
   let alternate_file = substitute(alternate_file, '\.rb$', '_spec.rb', '')
   let alternate_file = substitute(alternate_file, '\.erb$', '\.erb_spec.rb', '')
@@ -163,22 +172,22 @@ function! s:AlternateFileFor(file)
 
   if s:IsCucumberFeatureFile(path)
     return s:AlternateFileForCucumberFeatureFile(path)
-  elseif s:IsRakeRSpecFile(path)
-    return s:AlternateFileForRakeRSpecFile(path)
-  elseif s:IsRSpecFile(path)
-    return s:AlternateFileForRSpecFile(path)
   elseif s:IsCucumberStepDefinitionFile(path)
     return s:AlternateFileForCucumberStepDefinitionFile(path)
+  elseif s:IsRakeRSpecFile(path)
+    return s:AlternateFileForRakeRSpecFile(path)
+  elseif s:IsRakeFile(path)
+    return s:AlternateFileForRakeImplementationFile(path)
   elseif s:IsJavascriptSpecFile(path)
     return s:AlternateFileForJavascriptSpecFile(path)
   elseif s:IsJavascriptImplementationFile(path)
     return s:AlternateFileForJavascriptImplementationFile(path)
-  elseif s:IsRakeFile(path)
-    return s:AlternateFileForRakeImplementationFile(path)
   elseif s:IsExUnitTestFile(path)
     return s:AlternateFileForExUnitTestFile(path)
   elseif s:IsElixirImplementationFile(path)
     return s:AlternateFileForElixirImplementationFile(path)
+  elseif s:IsRSpecFile(path)
+    return s:AlternateFileForRSpecFile(path)
   else
     return s:AlternateFileForRubyImplementationFile(path)
   endif
