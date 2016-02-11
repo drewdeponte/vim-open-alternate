@@ -91,6 +91,18 @@ describe 's:AlternateFileFor'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
       end
     end
+
+    context 'when path is a app implementation file'
+      it 'returns the paired app RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'apps/offer_service/fulfiller.rb') == 'spec/offer_service/fulfiller_spec.rb'
+      end
+    end
+
+    " context 'when path is app RSpec file'
+    "   it 'returns the paired app implementation file'
+    "     Expect vspec#call('s:AlternateFileFor', 'spec/offer_service/fulfiller_spec.rb') == 'apps/offer_service/fulfiller.rb'
+    "   end
+    " end
   end
 
   context 'Hanami App RSpec support'
@@ -129,6 +141,18 @@ describe 's:AlternateFileFor'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
       end
     end
+
+    context 'when path is a app implementation file'
+      it 'returns the paired app RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'app/fulfiller.rb') == 'spec/fulfiller_spec.rb'
+      end
+    end
+
+    " context 'when path is app RSpec file'
+    "   it 'returns the paired app implementation file'
+    "     Expect vspec#call('s:AlternateFileFor', 'spec/fulfiller_spec.rb') == 'app/fulfiller.rb'
+    "   end
+    " end
   end
 
   context 'Rails RSpec support'
