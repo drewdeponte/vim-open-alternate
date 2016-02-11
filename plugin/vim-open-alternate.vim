@@ -1,10 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions to help identify types of files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! s:InRailsProject()
-  return filereadable('./bin/rails') || filereadable('./script/rails')
-endfunction
-
 function! s:IsRSpecFile(file)
   return match(a:file, '^spec/.*_spec\.rb$') != -1
 endfunction
@@ -71,7 +67,6 @@ function! s:AlternateFileForRSpecFile(rspec_file)
     let alternate_file = 'apps/' . alternate_file
   elseif s:IsRailsControllerModelViewAssetFile(alternate_file)
     let alternate_file = 'app/' . alternate_file
-  elseif s:InRailsProject()
   else
     let alternate_file = 'lib/' . alternate_file
   end
@@ -125,7 +120,7 @@ function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^apps/', '', '')
   elseif s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
     let alternate_file = substitute(a:ruby_implementation_file, '^app/', '', '')
-  elseif !s:InRailsProject()
+  else
     let alternate_file = substitute(a:ruby_implementation_file, '^lib/', '', '')
   end
   let alternate_file = substitute(alternate_file, '\.rb$', '_spec.rb', '')
