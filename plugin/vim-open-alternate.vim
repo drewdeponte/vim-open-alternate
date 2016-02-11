@@ -147,7 +147,7 @@ function! s:AlternateFileForJavascriptImplementationFile(javascript_implementati
   return alternate_file
 endfunction
 
-function! s:AlternateFileForElixitImplementationFile(elixir_implementation_file)
+function! s:AlternateFileForElixirImplementationFile(elixir_implementation_file)
   " go to implementation file
   let alternate_file = substitute(a:elixir_implementation_file, '\.ex$', '_test.exs', '')
   let alternate_file = 'test/' . alternate_file
@@ -178,7 +178,7 @@ function! s:AlternateFileFor(file)
   elseif s:IsExUnitTestFile(path)
     return s:AlternateFileForExUnitTestFile(path)
   elseif s:IsElixirImplementationFile(path)
-    return s:AlternateFileForElixitImplementationFile(path)
+    return s:AlternateFileForElixirImplementationFile(path)
   else
     return s:AlternateFileForRubyImplementationFile(path)
   endif
