@@ -55,7 +55,7 @@ describe 's:AlternateFileFor'
     end
   end
 
-  context 'Hanami RSpec support'
+  context 'Hanami Container RSpec support'
     context 'when path is a controller RSpec file'
       it 'returns the paired controller implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/web/controllers/users/create_spec.rb') == 'apps/web/controllers/users/create.rb'
@@ -77,6 +77,56 @@ describe 's:AlternateFileFor'
     context 'when path is a view implementation file'
       it 'returns the paired view RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'apps/web/views/users/create.rb') == 'spec/web/views/users/create_spec.rb'
+      end
+    end
+
+    context 'when path is a lib RSpec file'
+      it 'returns the paired lib implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/car/my_lib_spec.rb') == 'lib/foo/bar/car/my_lib.rb'
+      end
+    end
+
+    context 'when path is a lib implementation file'
+      it 'returns the paired lib RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
+      end
+    end
+  end
+
+  context 'Hanami App RSpec support'
+    context 'when path is a controller RSpec file'
+      it 'returns the paired controller implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/controllers/users/create_spec.rb') == 'app/controllers/users/create.rb'
+      end
+    end
+
+    context 'when path is a controller implementation file'
+      it 'returns the paired controller RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'app/controllers/users/create.rb') == 'spec/controllers/users/create_spec.rb'
+      end
+    end
+
+    context 'when path is a view RSpec file'
+      it 'returns the paired view implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/views/users/create_spec.rb') == 'app/views/users/create.rb'
+      end
+    end
+
+    context 'when path is a view implementation file'
+      it 'returns the paired view RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'app/views/users/create.rb') == 'spec/views/users/create_spec.rb'
+      end
+    end
+
+    context 'when path is a lib RSpec file'
+      it 'returns the paired lib implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/car/my_lib_spec.rb') == 'lib/foo/bar/car/my_lib.rb'
+      end
+    end
+
+    context 'when path is a lib implementation file'
+      it 'returns the paired lib RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
       end
     end
   end
@@ -132,13 +182,14 @@ describe 's:AlternateFileFor'
 
     context 'when path is a lib RSpec file'
       it 'returns the paired lib implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/lib/foo_spec.rb') == 'lib/foo.rb'
+        Expect vspec#call('s:AlternateFileFor', 'spec/foo_spec.rb') == 'lib/foo.rb'
+        cd ..
       end
     end
 
     context 'when path is a lib implementation file'
       it 'returns the paired lib RSpec file'
-        Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/lib/foo_spec.rb'
+        Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'
       end
     end
 
@@ -155,16 +206,16 @@ describe 's:AlternateFileFor'
     end
   end
 
-  context 'Ruby Gem support'
+  context 'Ruby Gem RSpec support'
     context 'when path is a lib implementation file'
       it 'returns the paired RSpec file'
-        Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/lib/foo_spec.rb'
+        Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'
       end
     end
 
     context 'when path is a lib RSpec file'
       it 'returns the paired ruby implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/lib/foo_spec.rb') == 'lib/foo.rb'
+        Expect vspec#call('s:AlternateFileFor', 'spec/foo_spec.rb') == 'lib/foo.rb'
       end
     end
   end
