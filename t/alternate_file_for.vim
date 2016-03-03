@@ -55,6 +55,19 @@ describe 's:AlternateFileFor'
     end
   end
 
+  context 'Python Test support'
+    context 'when path is a Python test file'
+      it 'returns the paired Python implementation file'
+        Expect vspec#call('s:AlternateFileFor', 'test/lib/test_toaster.py') == 'lib/toaster.py'
+      end
+    end
+    context 'when path is a Python implementation file'
+      it 'returns the paired Python test file'
+        Expect vspec#call('s:AlternateFileFor', 'lib/toaster.py') == 'test/lib/test_toaster.py'
+      end
+    end
+  end
+
   context 'Hanami Container RSpec support'
     context 'when path is a controller RSpec file'
       it 'returns the paired controller implementation file'
