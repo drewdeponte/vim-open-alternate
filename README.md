@@ -101,6 +101,13 @@ simple as running the following commands:
     git add .
     git commit -m "Added vim-open-alternate plugin to my setup."
 
+If you're using [Janus](https://github.com/carlhuda/janus) it's very similar, just omit the `bundle` directory:
+
+    cd ~/.janus/
+    git submodule add git@github.com:cyphactor/vim-open-alternate.git vim-open-alternate
+    git add .
+    git commit -m "Added vim-open-alternate plugin to my setup."
+
 If you are using another method, you are on your own. I have been told that
 this plugin is compatible with [Vundle](http://github.com/gmarik/vundle)
 but I have not tested it myself.
