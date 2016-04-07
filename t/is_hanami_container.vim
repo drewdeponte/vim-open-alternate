@@ -3,6 +3,16 @@ runtime! plugin/vim-open-alternate.vim
 call vspec#hint({'scope': 'VimOpenAlternateScope()', 'sid': 'VimOpenAlternateSid()'})
 
 describe 's:IsHanamiContainerArchitecture'
+  before
+    call writefile([], "config/environment.rb", "")
+    call mkdir("apps", "")
+  end
+
+  after
+    call delete("config/environment.rb")
+    call system("rm -r apps")
+  end
+
   context 'when given an hanami rspec controller file path'
     it 'returns true'
       Expect vspec#call('s:IsHanamiContainerArchitecture', 'spec/web/controllers/users/create_spec.rb') == 1
