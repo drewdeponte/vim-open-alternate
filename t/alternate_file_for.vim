@@ -236,12 +236,6 @@ describe 's:AlternateFileFor'
       end
     end
 
-    context 'when path is a lib RSpec file'
-      it 'returns the paired lib implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/foo_spec.rb') == 'lib/foo.rb'
-      end
-    end
-
     context 'when path is a lib implementation file'
       it 'returns the paired lib RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'
@@ -262,6 +256,14 @@ describe 's:AlternateFileFor'
   end
 
   context 'Ruby Gem RSpec support'
+    before
+      call writefile([], "some_gem.gemspec", "")
+    end
+
+    after
+      call delete("some_gem.gemspec")
+    end
+
     context 'when path is a lib implementation file'
       it 'returns the paired RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'

@@ -27,7 +27,8 @@ function! s:IsRailsControllerModelViewAssetFile(file)
     \ match(a:file, '^\(app\|spec\)\/models\/.*\.rb$') != -1 ||
     \ match(a:file, '^\(app\|spec\)\/views\/.*\.rb$') != -1 ||
     \ match(a:file, '^\(app\|spec\)\/helpers\/.*\.rb$') != -1 ||
-    \ match(a:file, '^\(app\|spec\)\/mailers\/.*\.rb$') != -1
+    \ match(a:file, '^\(app\|spec\)\/mailers\/.*\.rb$') != -1 ||
+    \ match(a:file, '^lib\/.*\.rb$') != -1
   let l:is_rails_app =
     \ filereadable('config/application.rb') &&
     \ filereadable('config/routes.rb') &&
@@ -36,7 +37,7 @@ function! s:IsRailsControllerModelViewAssetFile(file)
 endfunction
 
 function! s:IsHanamiContainerArchitecture(file)
-  let l:is_ruby_file = match(a:file, '^\(apps\|spec\)\/.*\.rb$') != -1
+  let l:is_ruby_file = match(a:file, '^\(apps\|lib\|spec\)\/.*\.rb$') != -1
   let l:is_hanami_container =
     \ filereadable('config/environment.rb') &&
     \ isdirectory('apps')
@@ -44,13 +45,19 @@ function! s:IsHanamiContainerArchitecture(file)
 endfunction
 
 function! s:IsHanamiAppImplementationFile(file)
-  let l:is_ruby_file = match(a:file, '^\(app\|spec\)\/.*\.rb$') != -1
+  let l:is_ruby_file = match(a:file, '^\(app\|lib\|spec\)\/.*\.rb$') != -1
   let l:is_hanami_app =
     \ filereadable('config/application.rb') &&
     \ filereadable('config/routes.rb') &&
     \ filereadable("config/environment.rb") &&
     \ isdirectory('app')
   return is_ruby_file && is_hanami_app
+endfunction
+
+function! s:IsRubyGem(file)
+  let l:is_ruby_file = match(a:file, '^\(lib\|spec\)\/.*\.rb$') != -1
+  let l:is_ruby_gem = match(glob('*\.gemspec'), '.*\.gemspec$') != -1
+  return is_ruby_file && is_ruby_gem
 endfunction
 
 function! s:IsJavascriptSpecFile(file)
@@ -93,7 +100,7 @@ function! s:AlternateFileForRSpecFile(rspec_file)
     let alternate_file = 'app/' . alternate_file
   elseif s:IsHanamiContainerArchitecture(a:rspec_file)
     let alternate_file = 'apps/' . alternate_file
-  else
+  elseif s:IsRubyGem(a:rspec_file)
     let alternate_file = 'lib/' . alternate_file
   end
   return alternate_file
@@ -144,11 +151,14 @@ function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
   " go to spec file
   if s:IsHanamiAppImplementationFile(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^app/', '', '')
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
   elseif s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^app/', '', '')
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
   elseif s:IsHanamiContainerArchitecture(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^apps/', '', '')
-  else
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
+  elseif s:IsRubyGem(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^lib/', '', '')
   end
   let alternate_file = substitute(alternate_file, '\.rb$', '_spec.rb', '')
