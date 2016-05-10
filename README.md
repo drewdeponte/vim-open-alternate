@@ -2,6 +2,10 @@
 
 # open-alternate.vim
 
+**Note:** This project is no longer maintained. Please see my new project
+[alt](https://github.com/cyphactor/alt) that provides the same type of
+functionality in a more general way.
+
 *Bringing alternate file opening to the forefront*
 
 [![It in Action](/images/vim-open-alternate-intro-screenshot.png?raw=true)](https://vimeo.com/66043605)
