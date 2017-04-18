@@ -56,6 +56,16 @@ describe 's:AlternateFileFor'
   end
 
   context 'Hanami Container RSpec support'
+    before
+      call writefile([], "config/environment.rb", "")
+      call mkdir("apps", "")
+    end
+
+    after
+      call delete("config/environment.rb")
+      call system("rm -r apps")
+    end
+
     context 'when path is a controller RSpec file'
       it 'returns the paired controller implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/web/controllers/users/create_spec.rb') == 'apps/web/controllers/users/create.rb'
@@ -80,12 +90,6 @@ describe 's:AlternateFileFor'
       end
     end
 
-    context 'when path is a lib RSpec file'
-      it 'returns the paired lib implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/car/my_lib_spec.rb') == 'lib/foo/bar/car/my_lib.rb'
-      end
-    end
-
     context 'when path is a lib implementation file'
       it 'returns the paired lib RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
@@ -106,6 +110,20 @@ describe 's:AlternateFileFor'
   end
 
   context 'Hanami App RSpec support'
+    before
+      call writefile([], "config/routes.rb", "")
+      call writefile([], "config/application.rb", "")
+      call writefile([], "config/environment.rb", "")
+      call mkdir("app", "")
+    end
+
+    after
+      call delete("config/routes.rb")
+      call delete("config/application.rb")
+      call delete("config/environment.rb")
+      call system("rm -r app")
+    end
+
     context 'when path is a controller RSpec file'
       it 'returns the paired controller implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/controllers/users/create_spec.rb') == 'app/controllers/users/create.rb'
@@ -130,12 +148,6 @@ describe 's:AlternateFileFor'
       end
     end
 
-    context 'when path is a lib RSpec file'
-      it 'returns the paired lib implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/foo/bar/car/my_lib_spec.rb') == 'lib/foo/bar/car/my_lib.rb'
-      end
-    end
-
     context 'when path is a lib implementation file'
       it 'returns the paired lib RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo/bar/car/my_lib.rb') == 'spec/foo/bar/car/my_lib_spec.rb'
@@ -155,7 +167,27 @@ describe 's:AlternateFileFor'
     " end
   end
 
+  context 'Non-Rails and non-Hanami RSpec support'
+    context 'when path is a custom implementation file'
+      it 'returns the paired custom RSpec file'
+        Expect vspec#call('s:AlternateFileFor', 'app/api/v1/user.rb') == 'spec/app/api/v1/user_spec.rb'
+      end
+    end
+  end
+
   context 'Rails RSpec support'
+    before
+      call writefile([], "config/routes.rb", "")
+      call writefile([], "config/application.rb", "")
+      call mkdir("app", "")
+    end
+
+    after
+      call delete("config/routes.rb")
+      call delete("config/application.rb")
+      call system("rm -r app")
+    end
+
     context 'when path is a controller RSpec file'
       it 'returns the paird controller implementation file'
         Expect vspec#call('s:AlternateFileFor', 'spec/controllers/tasks_controller_spec.rb') == 'app/controllers/tasks_controller.rb'
@@ -204,13 +236,6 @@ describe 's:AlternateFileFor'
       end
     end
 
-    context 'when path is a lib RSpec file'
-      it 'returns the paired lib implementation file'
-        Expect vspec#call('s:AlternateFileFor', 'spec/foo_spec.rb') == 'lib/foo.rb'
-        cd ..
-      end
-    end
-
     context 'when path is a lib implementation file'
       it 'returns the paired lib RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'
@@ -231,6 +256,14 @@ describe 's:AlternateFileFor'
   end
 
   context 'Ruby Gem RSpec support'
+    before
+      call writefile([], "some_gem.gemspec", "")
+    end
+
+    after
+      call delete("some_gem.gemspec")
+    end
+
     context 'when path is a lib implementation file'
       it 'returns the paired RSpec file'
         Expect vspec#call('s:AlternateFileFor', 'lib/foo.rb') == 'spec/foo_spec.rb'

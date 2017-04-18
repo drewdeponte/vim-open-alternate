@@ -6,5 +6,10 @@ task :dump do
 end
 
 task :test do
-  sh 'bundle exec vim-flavor test'
+  begin
+    FileUtils.mkdir('config') unless File.directory?('config')
+    sh 'bundle exec vim-flavor test'
+  ensure
+    FileUtils.rm_r('config')
+  end
 end

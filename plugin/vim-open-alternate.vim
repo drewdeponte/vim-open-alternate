@@ -22,15 +22,42 @@ function! s:IsCucumberStepDefinitionFile(file)
 endfunction
 
 function! s:IsRailsControllerModelViewAssetFile(file)
-  return match(a:file, '\<controllers\>') != -1 || match(a:file, '\<models\>') != -1 || match(a:file, '\<views\>') != -1 || match(a:file, '\<assets\>') != -1 || match(a:file, '\<helpers\>') != -1 || match(a:file, '\<mailers\>') != -1
+  let l:is_ruby_file =
+    \ match(a:file, '^\(app\|spec\)\/controllers\/.*\.rb$') != -1 ||
+    \ match(a:file, '^\(app\|spec\)\/models\/.*\.rb$') != -1 ||
+    \ match(a:file, '^\(app\|spec\)\/views\/.*\.rb$') != -1 ||
+    \ match(a:file, '^\(app\|spec\)\/helpers\/.*\.rb$') != -1 ||
+    \ match(a:file, '^\(app\|spec\)\/mailers\/.*\.rb$') != -1 ||
+    \ match(a:file, '^lib\/.*\.rb$') != -1
+  let l:is_rails_app =
+    \ filereadable('config/application.rb') &&
+    \ filereadable('config/routes.rb') &&
+    \ isdirectory('app')
+  return is_ruby_file && is_rails_app
 endfunction
 
 function! s:IsHanamiContainerArchitecture(file)
-  return match(a:file, '^spec\/\w\+\/controllers\/') != -1 || match(a:file, '^spec\/\w\+\/views\/') != -1 || match(a:file, '^apps\/\w\+\/controllers\/') != -1 || match(a:file, '^apps\/\w\+\/views\/') != -1
+  let l:is_ruby_file = match(a:file, '^\(apps\|lib\|spec\)\/.*\.rb$') != -1
+  let l:is_hanami_container =
+    \ filereadable('config/environment.rb') &&
+    \ isdirectory('apps')
+  return is_ruby_file && is_hanami_container
 endfunction
 
 function! s:IsHanamiAppImplementationFile(file)
-  return match(a:file, '^app\/.*\.rb$') != -1 || match(a:file, '^apps\/.*\.rb$') != -1
+  let l:is_ruby_file = match(a:file, '^\(app\|lib\|spec\)\/.*\.rb$') != -1
+  let l:is_hanami_app =
+    \ filereadable('config/application.rb') &&
+    \ filereadable('config/routes.rb') &&
+    \ filereadable("config/environment.rb") &&
+    \ isdirectory('app')
+  return is_ruby_file && is_hanami_app
+endfunction
+
+function! s:IsRubyGem(file)
+  let l:is_ruby_file = match(a:file, '^\(lib\|spec\)\/.*\.rb$') != -1
+  let l:is_ruby_gem = match(glob('*\.gemspec'), '.*\.gemspec$') != -1
+  return is_ruby_file && is_ruby_gem
 endfunction
 
 function! s:IsJavascriptSpecFile(file)
@@ -67,11 +94,13 @@ function! s:AlternateFileForRSpecFile(rspec_file)
   let alternate_file = substitute(a:rspec_file, 'erb_spec\.rb$', 'erb', '')
   let alternate_file = substitute(alternate_file, '_spec\.rb$', '.rb', '')
   let alternate_file = substitute(alternate_file, '^spec/', '', '')
-  if s:IsHanamiContainerArchitecture(a:rspec_file)
-    let alternate_file = 'apps/' . alternate_file
-  elseif s:IsRailsControllerModelViewAssetFile(alternate_file)
+  if s:IsHanamiAppImplementationFile(a:rspec_file)
     let alternate_file = 'app/' . alternate_file
-  else
+  elseif s:IsRailsControllerModelViewAssetFile(a:rspec_file)
+    let alternate_file = 'app/' . alternate_file
+  elseif s:IsHanamiContainerArchitecture(a:rspec_file)
+    let alternate_file = 'apps/' . alternate_file
+  elseif s:IsRubyGem(a:rspec_file)
     let alternate_file = 'lib/' . alternate_file
   end
   return alternate_file
@@ -120,14 +149,16 @@ endfunction
 function! s:AlternateFileForRubyImplementationFile(ruby_implementation_file)
   let alternate_file = a:ruby_implementation_file
   " go to spec file
-  if s:IsHanamiContainerArchitecture(a:ruby_implementation_file)
-    let alternate_file = substitute(alternate_file, '^apps/', '', '')
+  if s:IsHanamiAppImplementationFile(a:ruby_implementation_file)
+    let alternate_file = substitute(alternate_file, '^app/', '', '')
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
   elseif s:IsRailsControllerModelViewAssetFile(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^app/', '', '')
-  elseif s:IsHanamiAppImplementationFile(a:ruby_implementation_file)
-    let alternate_file = substitute(alternate_file, '^app/', '', '')
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
+  elseif s:IsHanamiContainerArchitecture(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^apps/', '', '')
-  else
+    let alternate_file = substitute(alternate_file, '^lib/', '', '')
+  elseif s:IsRubyGem(a:ruby_implementation_file)
     let alternate_file = substitute(alternate_file, '^lib/', '', '')
   end
   let alternate_file = substitute(alternate_file, '\.rb$', '_spec.rb', '')
