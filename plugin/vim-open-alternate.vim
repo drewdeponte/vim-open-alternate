@@ -49,6 +49,14 @@ function! s:IsElixirImplementationFile(file)
   return match(a:file, '^.*\.ex$') != -1
 endfunction
 
+function! s:IsPythonTestFile(file)
+  return match(a:file, 'test_.*\.py$') != -1
+endfunction
+
+function! s:IsPythonImplementationFile(file)
+  return match(a:file, '^.*\.py$') != -1
+endfunction
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Functions to generate alternate files paths for test files
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -100,6 +108,13 @@ endfunction
 function! s:AlternateFileForExUnitTestFile(exunit_test_file)
   " go to implementation file
   let alternate_file = substitute(a:exunit_test_file, '_test\.exs$', '.ex', '')
+  let alternate_file = substitute(alternate_file, '^test/', '', '')
+  return alternate_file
+endfunction
+
+function! s:AlternateFileForPythonTestFile(python_test_file)
+  " go to implementation file
+  let alternate_file = substitute(a:python_test_file, 'test_\(.*\)\.py$', '\1.py', '')
   let alternate_file = substitute(alternate_file, '^test/', '', '')
   return alternate_file
 endfunction
@@ -159,8 +174,15 @@ function! s:AlternateFileForJavascriptImplementationFile(javascript_implementati
 endfunction
 
 function! s:AlternateFileForElixirImplementationFile(elixir_implementation_file)
-  " go to implementation file
+  " go to test file
   let alternate_file = substitute(a:elixir_implementation_file, '\.ex$', '_test.exs', '')
+  let alternate_file = 'test/' . alternate_file
+  return alternate_file
+endfunction
+
+function! s:AlternateFileForPythonImplementationFile(python_file)
+  " go to test file
+  let alternate_file = substitute(a:python_file, '\(.*\/\)\(.*\)\.py$', '\1test_\2.py', '')
   let alternate_file = 'test/' . alternate_file
   return alternate_file
 endfunction
@@ -190,6 +212,10 @@ function! s:AlternateFileFor(file)
     return s:AlternateFileForElixirImplementationFile(path)
   elseif s:IsRSpecFile(path)
     return s:AlternateFileForRSpecFile(path)
+  elseif s:IsPythonTestFile(path)
+    return s:AlternateFileForPythonTestFile(path)
+  elseif s:IsPythonImplementationFile(path)
+    return s:AlternateFileForPythonImplementationFile(path)
   else
     return s:AlternateFileForRubyImplementationFile(path)
   endif
